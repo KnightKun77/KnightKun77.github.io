@@ -5,20 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Custom Homepage</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f0f0; color: #333; }
-        h1 { color: #4CAF50; }
-        .container { max-width: 800px; margin: auto; padding: 20px; }
-        a { text-decoration: none; color: #4CAF50; margin: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        #clock {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #greeting {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        #bookmarks {
+            margin-bottom: 20px;
+        }
+        #year-progress {
+            margin-bottom: 20px;
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #year-progress-bar {
+            height: 20px;
+            background-color: #76c7c0;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        #todo {
+            margin-top: 20px;
+        }
+        #todo-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        #todo-list li {
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        input[type="text"] {
+            width: 200px;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome Back!</h1>
-        <h2>Quick Links</h2>
-        <p><a href="https://mail.google.com/">Gmail</a> | <a href="https://news.ycombinator.com/">Hacker News</a> | <a href="https://openai.com/">OpenAI</a> | <a href="https://github.com/">GitHub</a></p>
-        
-        <h2>Tools & Widgets</h2>
-        <iframe src="https://weather.com/" width="100%" height="300px" style="border:none;"></iframe>
+    <div id="clock"></div>
+    <div id="greeting">Hello, Nemi!</div>
+    <div id="bookmarks">
+        <h2>Bookmarks</h2>
+        <ul>
+            <li><a href="https://www.google.com" target="_blank">Google</a></li>
+            <li><a href="https://www.wikipedia.org" target="_blank">Wikipedia</a></li>
+            <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+        </ul>
     </div>
+    <div id="year-progress">
+        <div id="year-progress-bar"></div>
+    </div>
+    <div id="todo">
+        <h2>To-Do List</h2>
+        <input type="text" id="todo-input" placeholder="Add a new task...">
+        <button onclick="addTodo()">Add</button>
+        <ul id="todo-list"></ul>
+    </div>
+
+    <script>
+        // Clock Widget
+        function updateClock() {
+            const now = new Date();
+            const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('clock').innerHTML = now.toLocaleTimeString([], options);
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Year Progress Percentage Bar
+        function updateYearProgress() {
+            const startOfYear = new Date(new Date().getFullYear(), 0, 1);
+            const endOfYear = new Date(new Date().getFullYear() + 1, 0, 1);
+            const totalDays = (endOfYear - startOfYear) / (1000 * 60 * 60 * 24);
+            const currentDays = (new Date() - startOfYear) / (1000 * 60 * 60 * 24);
+            const progress = (currentDays / totalDays) * 100;
+            document.getElementById('year-progress-bar').style.width = progress + '%';
+        }
+        updateYearProgress();
+
+        // To-Do List
+        function addTodo() {
+            const input = document.getElementById('todo-input');
+            const newTodo = input.value.trim();
+            if (newTodo) {
+                const li = document.createElement('li');
+                li.textContent = newTodo;
+                document.getElementById('todo-list').appendChild(li);
+                input.value = ''; // Clear input
+            }
+        }
+    </script>
 </body>
 </html>
